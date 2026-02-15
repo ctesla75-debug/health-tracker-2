@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Health Tracker (Offline)</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="icons/icon-192.png" alt="" class="logo" />
+      <div>
+        <div class="title">Health Tracker</div>
+        <div class="subtitle">Fully offline • Local-only data</div>
+      </div>
+    </div>
+
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab active" data-tab="log" role="tab" aria-selected="true">Daily Log</button>
+      <button class="tab" data-tab="history" role="tab" aria-selected="false">History</button>
+      <button class="tab" data-tab="charts" role="tab" aria-selected="false">Charts</button>
+      <button class="tab" data-tab="data" role="tab" aria-selected="false">Data</button>
+      <button class="tab" data-tab="settings" role="tab" aria-selected="false">Settings</button>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- DAILY LOG -->
+    <section class="panel active" id="panel-log" role="tabpanel">
+      <div class="card">
+        <div class="card-head">
+          <h2>Daily Log</h2>
+          <div class="row wrap">
+            <label class="field">
+              <span>Date</span>
+              <input type="date" id="logDate" />
+            </label>
+            <div class="btnrow">
+              <button class="btn primary" id="btnLoadToday" type="button">Today</button>
+              <button class="btn" id="btnLoadSelected" type="button">Load</button>
+              <button class="btn success" id="btnSave" type="button">Save</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card inner">
+            <h3>Supplements</h3>
+            <div class="small muted">Tap to toggle. Grouped by time.</div>
+            <div class="pillbar" id="supplementSummary"></div>
+
+            <div class="group">
+              <h4>Morning</h4>
+              <div class="checks" id="suppMorning"></div>
+            </div>
+            <div class="group">
+              <h4>Afternoon</h4>
+              <div class="checks" id="suppAfternoon"></div>
+            </div>
+            <div class="group">
+              <h4>Evening</h4>
+              <div class="checks" id="suppEvening"></div>
+            </div>
+
+            <div class="group">
+              <h4>Custom Vitamin</h4>
+              <div class="row wrap">
+                <label class="field grow">
+                  <span>Name</span>
+                  <input type="text" id="customVitaminName" placeholder="e.g., Zinc" />
+                </label>
+                <label class="switch">
+                  <input type="checkbox" id="customVitaminTaken" />
+                  <span>Taken</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="card inner">
+            <h3>Exercise + Fasting</h3>
+            <div class="group">
+              <h4>Exercises</h4>
+              <div class="checks" id="exerciseChecks"></div>
+            </div>
+
+            <div class="group">
+              <h4>Fasting</h4>
+              <div class="row wrap">
+                <label class="switch">
+                  <input type="checkbox" id="fasted" />
+                  <span>Fasted</span>
+                </label>
+                <label class="switch">
+                  <input type="checkbox" id="waterFasted" />
+                  <span>Water fasted</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="group">
+              <h4>Blood Sugar (mmol/L)</h4>
+              <div class="grid-3">
+                <label class="field">
+                  <span>Fasting</span>
+                  <input type="number" step="0.1" inputmode="decimal" id="fastingBloodSugar" placeholder="e.g., 5.2" />
+                </label>
+                <label class="field">
+                  <span>Pre-dinner</span>
+                  <input type="number" step="0.1" inputmode="decimal" id="preDinnerSugar" placeholder="e.g., 6.0" />
+                </label>
+                <label class="field">
+                  <span>Post-dinner</span>
+                  <input type="number" step="0.1" inputmode="decimal" id="postDinnerSugar" placeholder="e.g., 7.1" />
+                </label>
+              </div>
+            </div>
+
+            <div class="group">
+              <h4>Measurements</h4>
+              <div class="grid-3">
+                <label class="field">
+                  <span>Waist (cm)</span>
+                  <input type="number" step="0.1" inputmode="decimal" id="waistSize" />
+                </label>
+                <label class="field">
+                  <span>Weight (kg)</span>
+                  <input type="number" step="0.1" inputmode="decimal" id="weight" />
+                </label>
+                <label class="field">
+                  <span>Fat (%)</span>
+                  <input type="number" step="0.1" inputmode="decimal" id="fatPercentage" />
+                </label>
+              </div>
+
+              <div class="grid-3">
+                <label class="field">
+                  <span>BP Systolic (mmHg)</span>
+                  <input type="number" step="1" inputmode="numeric" id="bpSystolic" />
+                </label>
+                <label class="field">
+                  <span>BP Diastolic (mmHg)</span>
+                  <input type="number" step="1" inputmode="numeric" id="bpDiastolic" />
+                </label>
+                <div></div>
+              </div>
+
+              <div class="grid-2">
+                <label class="field">
+                  <span>Grip Left (kg)</span>
+                  <input type="number" step="0.1" inputmode="decimal" id="gripLeft" />
+                </label>
+                <label class="field">
+                  <span>Grip Right (kg)</span>
+                  <input type="number" step="0.1" inputmode="decimal" id="gripRight" />
+                </label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card-foot">
+          <div class="muted" id="saveStatus">Tip: Install as an app from your browser menu (“Add to Home Screen”).</div>
+          <div class="btnrow">
+            <button class="btn danger" id="btnDeleteThisDay" type="button">Delete this day</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HISTORY -->
+    <section class="panel" id="panel-history" role="tabpanel">
+      <div class="card">
+        <div class="card-head">
+          <h2>History</h2>
+          <div class="row wrap">
+            <label class="field grow">
+              <span>Search (date or text)</span>
+              <input type="search" id="historySearch" placeholder="e.g., 2026-02 or zinc" />
+            </label>
+            <label class="field">
+              <span>Show</span>
+              <select id="historyLimit">
+                <option value="30">Last 30</option>
+                <option value="90">Last 90</option>
+                <option value="365">Last 365</option>
+                <option value="99999">All</option>
+              </select>
+            </label>
+            <button class="btn" id="btnRefreshHistory" type="button">Refresh</button>
+          </div>
+        </div>
+
+        <div id="historyList" class="accordion"></div>
+      </div>
+    </section>
+
+    <!-- CHARTS -->
+    <section class="panel" id="panel-charts" role="tabpanel">
+      <div class="card">
+        <div class="card-head">
+          <h2>Charts</h2>
+          <div class="row wrap">
+            <label class="field">
+              <span>Range</span>
+              <select id="chartRange">
+                <option value="30">Last 30 days</option>
+                <option value="90">Last 90 days</option>
+                <option value="180">Last 180 days</option>
+                <option value="365">Last 365 days</option>
+                <option value="99999">All</option>
+              </select>
+            </label>
+            <button class="btn" id="btnRefreshCharts" type="button">Refresh Charts</button>
+          </div>
+        </div>
+
+        <div class="chartgrid">
+          <div class="chartcard">
+            <div class="charttitle">Blood sugar (mmol/L)</div>
+            <canvas id="chartSugar" width="900" height="360"></canvas>
+            <div class="legend" id="legendSugar"></div>
+          </div>
+
+          <div class="chartcard">
+            <div class="charttitle">Weight (kg) & Fat (%)</div>
+            <canvas id="chartWeightFat" width="900" height="360"></canvas>
+            <div class="legend" id="legendWeightFat"></div>
+          </div>
+
+          <div class="chartcard">
+            <div class="charttitle">Waist (cm)</div>
+            <canvas id="chartWaist" width="900" height="320"></canvas>
+            <div class="legend" id="legendWaist"></div>
+          </div>
+
+          <div class="chartcard">
+            <div class="charttitle">Blood pressure (mmHg)</div>
+            <canvas id="chartBP" width="900" height="320"></canvas>
+            <div class="legend" id="legendBP"></div>
+          </div>
+
+          <div class="chartcard">
+            <div class="charttitle">Grip strength (kg)</div>
+            <canvas id="chartGrip" width="900" height="320"></canvas>
+            <div class="legend" id="legendGrip"></div>
+          </div>
+
+          <div class="chartcard">
+            <div class="charttitle">Activity counts (last range)</div>
+            <canvas id="chartActivity" width="900" height="380"></canvas>
+            <div class="legend" id="legendActivity"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DATA -->
+    <section class="panel" id="panel-data" role="tabpanel">
+      <div class="card">
+        <div class="card-head">
+          <h2>Data</h2>
+          <div class="muted">Export and import your logs. Works fully offline.</div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card inner">
+            <h3>Export</h3>
+            <div class="row wrap">
+              <button class="btn" id="btnExportJSON" type="button">Export JSON</button>
+              <button class="btn" id="btnExportCSV" type="button">Export CSV</button>
+            </div>
+            <div class="small muted">Exports all logs currently stored on this device.</div>
+          </div>
+
+          <div class="card inner">
+            <h3>Import</h3>
+            <input type="file" id="importFile" accept="application/json,.json" />
+            <div class="row wrap">
+              <button class="btn primary" id="btnImport" type="button">Import JSON</button>
+            </div>
+            <div class="small muted">
+              Import merges by date (latest import overwrites the same date). Data stays local.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="panel" id="panel-settings" role="tabpanel">
+      <div class="card">
+        <div class="card-head">
+          <h2>Settings</h2>
+          <div class="muted">Clear data (all logs) or by date range.</div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card inner">
+            <h3>Clear by date range</h3>
+            <div class="row wrap">
+              <label class="field">
+                <span>From</span>
+                <input type="date" id="clearFrom" />
+              </label>
+              <label class="field">
+                <span>To</span>
+                <input type="date" id="clearTo" />
+              </label>
+            </div>
+            <button class="btn danger" id="btnClearRange" type="button">Clear Range</button>
+            <div class="small muted">Deletes all logs between those dates (inclusive).</div>
+          </div>
+
+          <div class="card inner">
+            <h3>Clear everything</h3>
+            <button class="btn danger" id="btnClearAll" type="button">Clear All Data</button>
+            <div class="small muted">This cannot be undone.</div>
+          </div>
+        </div>
+
+        <div class="card inner">
+          <h3>Offline status</h3>
+          <div class="row wrap">
+            <div class="badge" id="offlineBadge">Checking…</div>
+            <button class="btn" id="btnReinstallSW" type="button">Refresh Offline Cache</button>
+          </div>
+          <div class="small muted">If you update files on GitHub, use “Refresh Offline Cache”.</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="muted">
+        Data is stored locally on this device (IndexedDB). No logins, no cloud, no trackers.
+      </div>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
